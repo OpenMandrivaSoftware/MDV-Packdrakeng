@@ -1,0 +1,77 @@
+2005-12-05 23:50  Michael Scherer <misc at mandriva.org>
+
+	* perl-MDV-Packdrakeng.spec: - use mkrel for release
+
+2005-11-15 11:44  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* .cvsignore: Ignore MakeMaker build files
+
+2005-11-04 11:23  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* perl-MDV-Packdrakeng.spec, lib/MDV/Packdrakeng.pm: This is 1.01
+
+2005-11-04 11:20  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* MANIFEST, README: Add README file for CPAN
+
+2005-11-04 11:16  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* lib/MDV/Packdrakeng.pm: POD formatting cleanup
+
+2005-11-04 11:12  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* lib/MDV/Packdrakeng.pm: Documentation updates
+
+2005-11-04 11:08  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* lib/MDV/Packdrakeng.pm: Use File::Path instead of our own mkpath
+	  routine (it's in perl-base)
+
+2005-11-04 11:05  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* lib/MDV/Packdrakeng.pm: Use $error global variable to keep last
+	  log message, even in quiet mode
+
+2005-11-03 11:42  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* lib/MDV/Packdrakeng.pm: Better error message reporting
+
+2005-10-28 14:20  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* perl-MDV-Packdrakeng.spec: Add BuildRequires. Don't require
+	  Compress::Zlib.
+
+2005-10-28 14:17  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* MANIFEST, Makefile.PL, perl-MDV-Packdrakeng.spec: Add spec file
+	  and target to make rpms for Mandriva
+
+2005-10-28 13:53  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* lib/MDV/: Packdrakeng.pm, Packdrakeng/zlib.pm: A bit more docs.
+	  And take credit, since I'm the maintainer.
+
+2005-10-28 12:19  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* t/01packdrakeng.t: Proper cleanup after test
+
+2005-10-28 12:11  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* MANIFEST: Add ChangeLog
+
+2005-10-28 12:07  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+
+	* lib/MDV/Packdrakeng.pm: Don't use CVS release for CPAN version
+	  number.
+
+2005-10-09 18:51  Olivier Thauvin <thauvin at aerov.jussieu.fr>
+
+	* lib/MDV/: Packdrakeng.pm, Packdrakeng/zlib.pm: - split from
+	  rpmtoos - use new namespace
+
+2005-10-09 18:31  Olivier Thauvin <thauvin at aerov.jussieu.fr>
+
+	* MANIFEST, Makefile.PL, lib/MDV/Packdrakeng.pm,
+	  lib/MDV/Packdrakeng/zlib.pm, t/01packdrakeng.t: - split from
+	  rpmtools - use new namespace
+
