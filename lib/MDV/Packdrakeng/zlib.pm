@@ -20,14 +20,15 @@ package MDV::Packdrakeng::zlib;
 
 use strict;
 use Compress::Zlib;
+use base qw(MDV::Packdrakeng);
 
-(our $VERSION) = q($Id$) =~ /(\d+\.\d+)/;
+(our $VERSION) = q($Id$) =~ /(\d+)/;
 
 my $gzip_header = pack("C" . Compress::Zlib::MIN_HDR_SIZE, 
     Compress::Zlib::MAGIC1, Compress::Zlib::MAGIC2, 
     Compress::Zlib::Z_DEFLATED(), 0,0,0,0,0,0,  Compress::Zlib::OSCODE);
 
-sub gzip_compress {
+sub compress_handle {
     my ($pack, $sourcefh) = @_;
     my ($insize, $outsize) = (0, 0); # aka uncompressed / compressed data length
 
@@ -69,7 +70,7 @@ sub gzip_compress {
     ($insize, $outsize)
 }
 
-sub gzip_uncompress {
+sub uncompress_handle {
     my ($pack, $destfh, $fileinfo) = @_;
 
     if (!defined $fileinfo) {

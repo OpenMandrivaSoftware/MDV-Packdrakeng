@@ -74,8 +74,6 @@ sub _new {
         coff => 0, # end of current compressed data
 
         # Compression sub
-        subcompress => \&extern_compress,
-        subuncompress => \&extern_uncompress,
         direct_write => 0, # true if wrapper writes directly in archive and not into temp file
 
         # Data we need keep in memory to achieve the storage
@@ -146,8 +144,8 @@ sub choose_compression_method {
             eval {
 		require Compress::Zlib; #- need this to ensure that Packdrakeng::zlib will load properly
 		require MDV::Packdrakeng::zlib;
-		$pack->{subcompress} = \&MDV::Packdrakeng::zlib::gzip_compress;
-		$pack->{subuncompress} = \&MDV::Packdrakeng::zlib::gzip_uncompress;
+
+        bless($pack, 'MDV::Packdrakeng::zlib');
 		$pack->{use_extern} = 0;
 		$pack->{direct_write} = 1;
             };
@@ -161,7 +159,7 @@ sub choose_compression_method {
 
 sub DESTROY {
     my ($pack) = @_;
-    $pack->{subuncompress}($pack, undef, undef);
+    $pack->uncompress_handle(undef, undef);
     $pack->build_toc();
     close($pack->{handle}) if $pack->{handle};
     close($pack->{ustream_data}{handle}) if $pack->{ustream_data}{handle};
@@ -287,7 +285,7 @@ sub end_seek {
 sub end_block {
     my ($pack) = @_;
     $pack->end_seek() or return 0;
-    my (undef, $csize) = $pack->{subcompress}($pack, undef);
+    my (undef, $csize) = $pack->compress_handle(undef);
     $pack->{current_block_csize} += $csize;
     foreach (keys %{$pack->{current_block_files}}) {
         $pack->{files}{$_} = $pack->{current_block_files}{$_};
@@ -304,7 +302,7 @@ sub end_block {
 # Compression wrapper #
 #######################
 
-sub extern_compress {
+sub compress_handle {
     my ($pack, $sourcefh) = @_;
     my ($insize, $outsize, $filesize) = (0, 0, 0); # aka uncompressed / compressed data length
     my $hout; # handle for gzip
@@ -356,7 +354,7 @@ sub extern_compress {
     ($insize, $outsize - $pack->{current_block_csize})
 }
 
-sub extern_uncompress {
+sub uncompress_handle {
     my ($pack, $destfh, $fileinfo) = @_;
 
     if (defined($pack->{ustream_data}) && (
@@ -415,7 +413,6 @@ sub extern_uncompress {
 
     my $byteswritten = 0;
     $pack->{ustream_data}{off} = $fileinfo->{off};
-    #my $read = 0;
 
     while ($byteswritten < $fileinfo->{size}) {
         my $data = $pack->{ustream_data}{buf};
@@ -517,7 +514,7 @@ sub add_virtual {
             next;
         };
 
-        my ($size, $csize) = $pack->{subcompress}($pack, $data);
+        my ($size, $csize) = $pack->compress_handle($data);
         $pack->{current_block_files}{$filename} = {
             size => $size,
             off => $pack->{current_block_off},
@@ -574,7 +571,7 @@ sub extract_virtual {
         $pack->{log}("Can't seek to offset $pack->{files}{$filename}->{coff}");
         return -1;
     };
-    $pack->{subuncompress}($pack, $destfh, $pack->{files}{$filename});
+    $pack->uncompress_handle($destfh, $pack->{files}{$filename});
 }
 
 sub extract {
