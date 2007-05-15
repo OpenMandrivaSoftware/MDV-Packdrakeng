@@ -304,12 +304,11 @@ sub end_block {
 
 sub compress_handle {
     my ($pack, $sourcefh) = @_;
-    my ($insize, $outsize, $filesize) = (0, 0, 0); # aka uncompressed / compressed data length
+    my ($insize, $outsize) = (0, 0); # aka uncompressed / compressed data length
     my $hout; # handle for gzip
 
     if (defined($pack->{cstream_data})) {
         $hout = $pack->{cstream_data}{hout};
-        $filesize = (stat($pack->{cstream_data}{file_block}))[7];
     }
     if (defined($sourcefh)) {
         if (!defined($pack->{cstream_data})) {
