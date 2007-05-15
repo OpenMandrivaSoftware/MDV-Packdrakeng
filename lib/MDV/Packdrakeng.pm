@@ -513,7 +513,9 @@ sub add_virtual {
             next;
         };
 
-        my ($size, $csize) = $pack->compress_handle($data);
+        my ($size, $csize) = (ref($data) eq 'GLOB') ?
+            $pack->compress_handle($data) :
+            (length($data), $pack->compress_data($data));
         $pack->{current_block_files}{$filename} = {
             size => $size,
             off => $pack->{current_block_off},
@@ -838,8 +840,9 @@ $type gives the type of the file:
   - 'd', the file will be a directory, store as '$filename'. $data is not used.
   - 'l', the file will be a symlink named $filename, pointing to the file whose path
     is given by the string $data.
-  - 'f', the file is a normal file, $filename will be its name, $data is an handle to
-    open file, data will be read from current position to the end of file.
+  - 'f', the file is a normal file, $filename will be its name, $data is either
+         an handle to open file, data will be read from current position to the
+         end of file, either a string to push as the content of the file.
 
 =item B<< MDV::Packdrakeng->add($prefix, @files) >>
 
