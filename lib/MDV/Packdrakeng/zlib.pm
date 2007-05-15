@@ -35,12 +35,12 @@ sub compress_handle {
     # If $sourcefh is not set, this means we want a flush(), for end_block()
     # EOF, flush compress stream, adding crc
     if (!defined($sourcefh)) {
-        return(undef, $pack->gzip_compress_data());
+        return(undef, $pack->compress_data());
     }
 
     binmode $sourcefh;
     while (my $lenght = sysread($sourcefh, my $buf, $pack->{bufsize})) {
-        my $wres = $pack->gzip_compress_data($buf);
+        my $wres = $pack->compress_data($buf);
         $outsize += $wres;
         $insize += $lenght;
     }
@@ -48,7 +48,7 @@ sub compress_handle {
     ($insize, $outsize)
 }
 
-sub gzip_compress_data {
+sub compress_data {
     my ($pack, $data) = ($_[0], \$_[1]);
     my $outsize = 0;
     if (! defined($$data)) {
