@@ -22,7 +22,7 @@ use strict;
 use POSIX qw(O_WRONLY O_TRUNC O_CREAT O_RDONLY O_APPEND);
 use File::Path qw(mkpath);
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 my  ($toc_header, $toc_footer) =
     ('cz[0',      '0]cz');
