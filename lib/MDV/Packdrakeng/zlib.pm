@@ -35,15 +35,32 @@ sub compress_handle {
     # If $sourcefh is not set, this means we want a flush(), for end_block()
     # EOF, flush compress stream, adding crc
     if (!defined($sourcefh)) {
+        return(undef, $pack->gzip_compress_data());
+    }
+
+    binmode $sourcefh;
+    while (my $lenght = sysread($sourcefh, my $buf, $pack->{bufsize})) {
+        my $wres = $pack->gzip_compress_data($buf);
+        $outsize += $wres;
+        $insize += $lenght;
+    }
+
+    ($insize, $outsize)
+}
+
+sub gzip_compress_data {
+    my ($pack, $data) = ($_[0], \$_[1]);
+    my $outsize = 0;
+    if (! defined($$data)) {
         if (defined($pack->{cstream_data}{object})) {
             my ($cbuf, $status) = $pack->{cstream_data}{object}->flush();
             $outsize += syswrite($pack->{handle}, $cbuf);
             $outsize += syswrite($pack->{handle}, pack("V V", $pack->{cstream_data}{crc}, $pack->{cstream_data}{object}->total_in()));
         }
         $pack->{cstream_data} = undef;
-        return(undef, $outsize);
+        return($outsize);
     }
-
+    
     if (!defined $pack->{cstream_data}{object}) {
         # Writing gzip header file
         $outsize += syswrite($pack->{handle}, $gzip_header);
@@ -53,21 +70,16 @@ sub compress_handle {
 	    -WindowBits    =>  - MAX_WBITS(),
 	);
     }
-
-    binmode $sourcefh;
-    while (my $lenght = sysread($sourcefh, my $buf, $pack->{bufsize})) {
-        $pack->{cstream_data}{crc} = crc32($buf, $pack->{cstream_data}{crc});
-        my ($cbuf, $status) = $pack->{cstream_data}{object}->deflate($buf);
-        my $wres = syswrite($pack->{handle}, $cbuf) || 0;
-        $wres == length($cbuf) or do {
-            warn "Can't push all data to compressor\n";
-            return 0, 0;
-        };
-        $outsize += $wres;
-        $insize += $lenght;
-    }
-
-    ($insize, $outsize)
+        
+    $pack->{cstream_data}{crc} = crc32($$data, $pack->{cstream_data}{crc});
+    my ($cbuf, $status) = $pack->{cstream_data}{object}->deflate($$data);
+    my $wres = syswrite($pack->{handle}, $cbuf) || 0;
+    $wres == length($cbuf) or do {
+        warn "Can't push all data to compressor\n";
+        return 0;
+    };
+    $outsize += $wres;
+    return($outsize);
 }
 
 sub uncompress_handle {
@@ -78,7 +90,7 @@ sub uncompress_handle {
         return 0;
     }
 
-    if (defined($pack->{ustream_data}) && ($fileinfo->{coff} != $pack->{ustream_data}{coff} || $fileinfo->{off} < $pack->{ustream_data}{off})) {
+    if (defined($pack->{ustream_data}) && ($fileinfo->{coff} != $pack->{ustream_data}{coff} || $fileinfo->{off} < ($pack->{ustream_data}{off} || 0))) {
         $pack->{ustream_data} = undef;
     }
 
