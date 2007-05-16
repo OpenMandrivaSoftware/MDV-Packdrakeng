@@ -53,7 +53,6 @@ sub _new {
         compress_method => $options{compress},
         uncompress_method => $options{uncompress},
         force_extern => $options{extern} || 0, # Don't use perl-zlib
-        use_extern => 1, # default behaviour, informative only
         noargs => $options{noargs},
 
         # compression level, aka -X gzip or bzip option
@@ -123,7 +122,7 @@ sub open {
     $pack->read_toc() or return undef;
     $pack->{debug}("Opening archive with '%s' / '%s'%s.",
         $pack->{compress_method}, $pack->{uncompress_method},
-        $pack->{use_extern} ? "" : " (internal compression)");
+        $pack->can('method_info') ? ' (' . $pack->method_info() . ')' : " (internal compression)");
     $pack
 }
 
@@ -147,7 +146,6 @@ sub choose_compression_method {
 		require MDV::Packdrakeng::zlib;
 
         bless($pack, 'MDV::Packdrakeng::zlib');
-		$pack->{use_extern} = 0;
             };
         }
     };
