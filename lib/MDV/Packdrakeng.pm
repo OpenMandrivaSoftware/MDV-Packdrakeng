@@ -73,9 +73,6 @@ sub _new {
 
         coff => 0, # end of current compressed data
 
-        # Compression sub
-        direct_write => 0, # true if wrapper writes directly in archive and not into temp file
-
         # Data we need keep in memory to achieve the storage
         current_block_files => {}, # Files in pending compressed block
         current_block_csize => 0,  # Actual size in pending compressed block
@@ -106,9 +103,13 @@ sub new {
     };
     $pack->choose_compression_method();
     $pack->{need_build_toc} = 1;
-    $pack->{debug}("Creating new archive with '%s' / '%s'%s.",
+    $pack->{debug}(
+        "Creating new archive with '%s' / '%s'%s.",
         $pack->{compress_method}, $pack->{uncompress_method},
-        $pack->{use_extern} ? "" : " (internal compression)");
+        $pack->can('method_info') ?
+            (" (" . $pack->method_info() . ")") :
+            " (internal compression)"
+    );
     $pack
 }
 
@@ -147,7 +148,6 @@ sub choose_compression_method {
 
         bless($pack, 'MDV::Packdrakeng::zlib');
 		$pack->{use_extern} = 0;
-		$pack->{direct_write} = 1;
             };
         }
     };
@@ -276,7 +276,7 @@ sub sort_files_by_packing {
 # Goto to the end of written compressed data
 sub end_seek {
     my ($pack) = @_;
-    my $seekvalue = $pack->{direct_write} ? $pack->{coff} + $pack->{current_block_csize} : $pack->{coff};
+    my $seekvalue = $pack->direct_write ? $pack->{coff} + $pack->{current_block_csize} : $pack->{coff};
     sysseek($pack->{handle}, $seekvalue, 0) == $seekvalue
 }
 
@@ -301,6 +301,9 @@ sub end_block {
 #######################
 # Compression wrapper #
 #######################
+
+# true if wrapper writes directly in archive and not into temp file
+sub direct_write { 0; }
 
 sub compress_handle {
     my ($pack, $sourcefh) = @_;

@@ -28,6 +28,11 @@ my $gzip_header = pack("C" . Compress::Zlib::MIN_HDR_SIZE,
     Compress::Zlib::MAGIC1, Compress::Zlib::MAGIC2, 
     Compress::Zlib::Z_DEFLATED(), 0,0,0,0,0,0,  Compress::Zlib::OSCODE);
 
+# true if wrapper writes directly in archive and not into temp file
+sub direct_write { 1; }
+
+sub method_info { "internal zlib $VERSION" }
+
 sub compress_handle {
     my ($pack, $sourcefh) = @_;
     my ($insize, $outsize) = (0, 0); # aka uncompressed / compressed data length
