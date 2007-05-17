@@ -884,6 +884,18 @@ Print to $handle (STDOUT if not specified) the table of content of the archive.
 
 =back
 
+=head1 CHANGELOG
+
+=head2 1.10
+
+=over 4
+
+=item use an oo code
+
+=item add_virtual() now accept a string as file content
+
+=back
+
 =head1 AUTHOR
 
 Olivier Thauvin <nanardon@mandriva.org>,
