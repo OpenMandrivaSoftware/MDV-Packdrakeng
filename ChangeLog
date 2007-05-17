@@ -1,77 +1,111 @@
-2005-12-05 23:50  Michael Scherer <misc at mandriva.org>
+2007-05-15 10:24  nanardon
 
-	* perl-MDV-Packdrakeng.spec: - use mkrel for release
+	* lib/MDV/Packdrakeng/zlib.pm: - rename function to generic name
 
-2005-11-15 11:44  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2007-05-15 10:21  nanardon
 
-	* .cvsignore: Ignore MakeMaker build files
+	* lib/MDV/Packdrakeng.pm: - kill useless assignement
 
-2005-11-04 11:23  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2007-05-15 00:11  nanardon
 
-	* perl-MDV-Packdrakeng.spec, lib/MDV/Packdrakeng.pm: This is 1.01
+	* lib/MDV/Packdrakeng/zlib.pm: - create a compress_data() + split
+	  code to allow in futur to add a file from string instead file
+	  handle
 
-2005-11-04 11:20  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2007-05-14 23:42  nanardon
 
-	* MANIFEST, README: Add README file for CPAN
+	* lib/MDV/Packdrakeng.pm, lib/MDV/Packdrakeng/zlib.pm: - use OO
+	  code instead code ref
 
-2005-11-04 11:16  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2006-07-12 12:16  nanardon
 
-	* lib/MDV/Packdrakeng.pm: POD formatting cleanup
+	* : - rename perl module directories
 
-2005-11-04 11:12  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2006-02-15 12:41  rgarciasuarez
 
-	* lib/MDV/Packdrakeng.pm: Documentation updates
+	* : 1.01-2mdk
 
-2005-11-04 11:08  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-12-05 22:50  mscherer
 
-	* lib/MDV/Packdrakeng.pm: Use File::Path instead of our own mkpath
-	  routine (it's in perl-base)
+	* : - use mkrel for release
 
-2005-11-04 11:05  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-15 10:44  rgarciasuarez
 
-	* lib/MDV/Packdrakeng.pm: Use $error global variable to keep last
-	  log message, even in quiet mode
+	* : Ignore MakeMaker build files
 
-2005-11-03 11:42  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-04 11:25  rgarciasuarez
 
-	* lib/MDV/Packdrakeng.pm: Better error message reporting
+	* : Regenerate ChangeLog
 
-2005-10-28 14:20  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-04 10:23  rgarciasuarez
 
-	* perl-MDV-Packdrakeng.spec: Add BuildRequires. Don't require
-	  Compress::Zlib.
+	* : This is 1.01
 
-2005-10-28 14:17  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-04 10:20  rgarciasuarez
 
-	* MANIFEST, Makefile.PL, perl-MDV-Packdrakeng.spec: Add spec file
-	  and target to make rpms for Mandriva
+	* : Add README file for CPAN
 
-2005-10-28 13:53  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-04 10:16  rgarciasuarez
 
-	* lib/MDV/: Packdrakeng.pm, Packdrakeng/zlib.pm: A bit more docs.
-	  And take credit, since I'm the maintainer.
+	* : POD formatting cleanup
 
-2005-10-28 12:19  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-04 10:12  rgarciasuarez
 
-	* t/01packdrakeng.t: Proper cleanup after test
+	* : Documentation updates
 
-2005-10-28 12:11  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-04 10:08  rgarciasuarez
 
-	* MANIFEST: Add ChangeLog
+	* : Use File::Path instead of our own mkpath routine (it's in
+	  perl-base)
 
-2005-10-28 12:07  Rafael Garcia-Suarez <rgarciasuarez at mandriva.com>
+2005-11-04 10:05  rgarciasuarez
 
-	* lib/MDV/Packdrakeng.pm: Don't use CVS release for CPAN version
-	  number.
+	* : Use $error global variable to keep last log message, even in
+	  quiet mode
 
-2005-10-09 18:51  Olivier Thauvin <thauvin at aerov.jussieu.fr>
+2005-11-03 10:42  rgarciasuarez
 
-	* lib/MDV/: Packdrakeng.pm, Packdrakeng/zlib.pm: - split from
-	  rpmtoos - use new namespace
+	* : Better error message reporting
 
-2005-10-09 18:31  Olivier Thauvin <thauvin at aerov.jussieu.fr>
+2005-10-28 12:23  rgarciasuarez
 
-	* MANIFEST, Makefile.PL, lib/MDV/Packdrakeng.pm,
-	  lib/MDV/Packdrakeng/zlib.pm, t/01packdrakeng.t: - split from
-	  rpmtools - use new namespace
+	* : ChangeLog for 1.00
+
+2005-10-28 12:20  rgarciasuarez
+
+	* : Add BuildRequires. Don't require Compress::Zlib.
+
+2005-10-28 12:17  rgarciasuarez
+
+	* : Add spec file and target to make rpms for Mandriva
+
+2005-10-28 11:53  rgarciasuarez
+
+	* : A bit more docs. And take credit, since I'm the maintainer.
+
+2005-10-28 10:19  rgarciasuarez
+
+	* : Proper cleanup after test
+
+2005-10-28 10:11  rgarciasuarez
+
+	* : Add ChangeLog
+
+2005-10-28 10:07  rgarciasuarez
+
+	* : Don't use CVS release for CPAN version number.
+
+2005-10-09 16:51  othauvin
+
+	* : - split from rpmtoos
+	  - use new namespace
+
+2005-10-09 16:31  othauvin
+
+	* : - split from rpmtools
+	  - use new namespace
+
+2005-10-09 16:31  
+
+	* : New repository initialized by cvs2svn.
 
