@@ -1,3 +1,27 @@
+2007-06-18 10:42  pixel
+
+	* lib/MDV/Packdrakeng.pm: 1.12
+
+2007-06-18 10:42  pixel
+
+	* lib/MDV/Packdrakeng.pm, lib/MDV/Packdrakeng/zlib.pm: - raise an
+	  exception when we can't write the generated .cz file
+	  (in case of "No space left on device")
+	  - allow explicit call to $pack->DESTROY
+	  (to allow catching the exception above)
+
+2007-06-04 22:45  nanardon
+
+	* lib/MDV/Packdrakeng.pm: - 1.11
+
+2007-06-04 22:39  nanardon
+
+	* lib/MDV/Packdrakeng.pm: - add compress_data to main module
+
+2007-05-17 17:13  nanardon
+
+	* ChangeLog: - kill ChangeLog file
+
 2007-05-17 17:02  nanardon
 
 	* MANIFEST: - update manifest list
