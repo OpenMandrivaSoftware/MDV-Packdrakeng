@@ -80,8 +80,8 @@ sub compress_data {
     my ($cbuf, $status) = $pack->{cstream_data}{object}->deflate($$data);
     my $wres = syswrite($pack->{handle}, $cbuf) || 0;
     $wres == length($cbuf) or do {
-        warn "Can't push all data to compressor\n";
-        return 0;
+	$pack->{destroyed} = 1;
+        die "Can't push all data to compressor\n";
     };
     $outsize += $wres;
     return($outsize);

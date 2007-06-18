@@ -157,8 +157,11 @@ sub choose_compression_method {
 
 sub DESTROY {
     my ($pack) = @_;
+    $pack->{destroyed} and return; #- allow calling DESTROY
+    $pack->{destroyed} = 1;
+
     $pack->uncompress_handle(undef, undef);
-    $pack->build_toc();
+    $pack->build_toc() == 1 or die "Can't write toc into archive\n";
     close($pack->{handle}) if $pack->{handle};
     close($pack->{ustream_data}{handle}) if $pack->{ustream_data}{handle};
 }
