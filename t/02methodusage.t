@@ -3,14 +3,16 @@
 # $Id$
 
 use strict;
-use Test::More tests => 5;
+use Test::More tests => 6;
 use Digest::MD5;
 
 use_ok('MDV::Packdrakeng');
 
 SKIP: {
-    eval { "use Compress::Zlib" };
-    skip "Compress::Zlib not availlable", 4 if($@);
+    eval "use Compress::Zlib";
+    skip "Compress::Zlib not availlable", 5 if($@);
+
+use_ok('MDV::Packdrakeng::zlib');
 
 {
 my $pack = MDV::Packdrakeng->new(
