@@ -44,6 +44,8 @@ sub tempfile {
     return ($handle, $fname);
 }
 
+sub method_info { "external $_[0]->{compress_method}/$_[0]->{uncompress_method} $VERSION" }
+
 sub _new {
     my ($class, %options) = @_;
 
@@ -103,11 +105,8 @@ sub new {
     $pack->choose_compression_method();
     $pack->{need_build_toc} = 1;
     $pack->{debug}(
-        "Creating new archive with '%s' / '%s'%s.",
-        $pack->{compress_method}, $pack->{uncompress_method},
-        $pack->can('method_info') ?
-            (" (" . $pack->method_info() . ")") :
-            " (internal compression)"
+        "Creating new archive with %s.",
+            $pack->method_info(),
     );
     $pack
 }
@@ -120,9 +119,9 @@ sub open {
 	return undef;
     };
     $pack->read_toc() or return undef;
-    $pack->{debug}("Opening archive with '%s' / '%s'%s.",
-        $pack->{compress_method}, $pack->{uncompress_method},
-        $pack->can('method_info') ? ' (' . $pack->method_info() . ')' : " (internal compression)");
+    $pack->{debug}("Opening archive with %s.",
+        $pack->method_info(),
+    );
     $pack
 }
 
