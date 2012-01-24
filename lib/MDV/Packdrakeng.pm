@@ -22,7 +22,7 @@ use strict;
 use POSIX qw(O_WRONLY O_TRUNC O_CREAT O_RDONLY O_APPEND);
 use File::Path qw(mkpath);
 
-our $VERSION = '1.13';
+our $VERSION = '1.14';
 
 my  ($toc_header, $toc_footer) =
     ('cz[0',      '0]cz');
@@ -147,6 +147,9 @@ sub choose_compression_method {
         bless($pack, 'MDV::Packdrakeng::zlib');
             };
         }
+    };
+    $test_method =~ m/^xz|^unxz/ and do {
+        $pack->{compress_method} ||= "xz";
     };
     if (!$pack->{noargs}) {
         $pack->{uncompress_method} ||= "$pack->{compress_method} -d";
