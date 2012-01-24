@@ -18,4 +18,5 @@ MAKE
 WriteMakefile(
     NAME	 => 'MDV::Packdrakeng',
     VERSION_FROM => 'lib/MDV/Packdrakeng.pm',
+    dist	=> { COMPRESS => "xz -f", SUFFIX => ".xz" },
 );
