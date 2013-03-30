@@ -22,7 +22,9 @@ use strict;
 use Compress::Zlib;
 use base qw(MDV::Packdrakeng);
 
-(our $VERSION) = q($Id$) =~ /(\d+)/;
+# git has no $Id keyword, so let's just manually add back what was in svn for
+# now, not really of that great relevance beyond it not breaking anyways...
+(our $VERSION) = q($Id: zlib.pm 225628 2007-08-09 11:00:15Z nanardon $) =~ /(\d+)/;
 
 my $gzip_header = pack("C" . 10,
     31, 139, 
